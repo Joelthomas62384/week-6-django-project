@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+
+
+{% block content %}
+
+<div class="container mt-10">
+    <div class=" bg-[rgba(64,48,95,0.18)] mx-auto backdrop-blur-sm shadow-[inset_-12px_-13px_20px_20px_#1b162b70]  px-10 py-10 rounded-xl  max-h-96 overflow-auto">
+
+        
+
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <div class="flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between pb-4">
+        <div class="pl-1">
+          
+            <h1 class="text-gray-300 text-2xl ">Admin Panel</h1>
+         
+        </div>
+        <label for="table-search" class="sr-only">Search</label>
+        <div class="relative">
+            <div class="absolute inset-y-0 left-0 rtl:inset-r-0 rtl:right-0 flex items-center ps-3 pointer-events-none">
+                <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+            </div>
+            <input autocomplete="off" type="text" id="table-search" class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for items">
+        </div>
+
+        <div >
+            <a href="{% url "create_user" %}" class="inline-flex items-center mx-2 space-x-1 bg-indigo-800 text-white border-0 py-1 px-3 focus:outline-none hover:bg-indigo-700 rounded text-base mt-4 md:mt-0"><span>Create User</span>
+                <svg xmlns="http://www.w3.org/2000/svg" color="white" x="10px" y="20px" width="15" height="15" viewBox="0 0 24 24">
+                    <path fill="white" fill-rule="evenodd" d="M 11 2 L 11 11 L 2 11 L 2 13 L 11 13 L 11 22 L 13 22 L 13 13 L 22 13 L 22 11 L 13 11 L 13 2 Z"></path>
+                </svg>
+                
+              </a>
+        </div>
+    </div>
+    <div id="table-container">
+    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 overflow-auto">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                
+                <th scope="col" class="px-6 py-3">
+                    Username
+                </th>
+
+                <th scope="col" class="px-6 py-3">
+                    Verify
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Edit
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Delete
+                </th>
+               
+            </tr>
+        </thead>
+        <tbody>
+            {% for us in users %}
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 ">
+                
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    {{us.username|title}}
+                </th>
+
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    {% if us.email_verified %}
+                    <span class="text-gray-400 italic">Verified</span>
+                    {% else %}
+                    <a href="{% url "verify_user" us.id %}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Verify</a>
+                    {% endif %}
+                </th>
+                
+                <td class="px-6 py-4">
+                    {% if not us.is_superuser or us.id == user.id %}
+                    <a href="{% url "edit_user" us.id %}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                    {% else %}
+                    <span class="text-gray-400 italic">SuperUser</span>
+                    {% endif %}
+                </td>
+                <td class="px-6 py-4">
+                    {% if not us.is_superuser  %}
+                    <a href="{% url "delete_user" us.id %}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Delete</a>
+                    {% else %}
+                    <span class="text-gray-400 italic">SuperUser</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+            
+        </tbody>
+    </table>
+</div>
+</div>
+
+    
+    </div>
+</div>
+
+<script>
+
+    const fetchResult = async(query,url) =>{
+        
+        let response = await fetch(`${url}?query=${query}`)
+        return await response.json();
+
+    }
+
+    const search = document.getElementById('table-search')
+    const tableContainer = document.getElementById('table-container')
+
+    search.addEventListener('input',async(e)=>{
+        let url ="/search";
+        let response = await fetchResult(e.target.value,url)
+        tableContainer.innerHTML = response.html
+    })
+</script>
+
+
+{% endblock content %}

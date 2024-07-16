@@ -1,0 +1,55 @@
+<table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 overflow-auto">
+    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <tr>
+            
+            <th scope="col" class="px-6 py-3">
+                Username
+            </th>
+
+            <th scope="col" class="px-6 py-3">
+                Verify
+            </th>
+            <th scope="col" class="px-6 py-3">
+                Edit
+            </th>
+            <th scope="col" class="px-6 py-3">
+                Delete
+            </th>
+           
+        </tr>
+    </thead>
+    <tbody>
+        {% for us in users %}
+        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 ">
+            
+            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                {{us.username|title}}
+            </th>
+
+            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                {% if us.email_verified %}
+                <span class="text-gray-400 italic">Verified</span>
+                {% else %}
+                <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Verify</a>
+                {% endif %}
+            </th>
+            
+            <td class="px-6 py-4">
+                {% if not us.is_superuser or us.id == user.id %}
+                <a href="{% url "edit_user" us.id %}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                {% else %}
+                <span class="text-gray-400 italic">SuperUser</span>
+                {% endif %}
+            </td>
+            <td class="px-6 py-4">
+                {% if not us.is_superuser  %}
+                <a href="{% url "delete_user" us.id %}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Delete</a>
+                {% else %}
+                <span class="text-gray-400 italic">SuperUser</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+        
+    </tbody>
+</table>

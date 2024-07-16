@@ -1,0 +1,48 @@
+<header style=" " class="sticky top-0 z-10 text-gray-400 backdrop-blur-lg shadow-[inset_-12px_-13px_20px_20px_#1b162b70]   body-font ">
+    <div class="container w-[80%] mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
+      <a href="{% url "home" %}" class="flex title-font font-medium items-center text-white mb-4 md:mb-0">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-10 h-10 text-white p-2 bg-indigo-500 rounded-full" viewBox="0 0 24 24">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+        </svg>
+        <span class="ml-3 text-xl">CodeWithJoe</span>
+      </a>
+      <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
+        {% if request.user.is_authenticated %}
+        <a href="{% url "home" %}" class="mr-5 hover:text-white">Home</a>
+        
+        <a href="{% url "about" %}" class="mr-5 hover:text-white">About</a>
+        {% endif %}
+      </nav>
+     {% if request.user.is_authenticated %}
+     <a href="{% url "logout" %}" class="inline-flex items-center mx-2 bg-indigo-800 text-white border-0 py-1 px-3 focus:outline-none hover:bg-indigo-700 rounded text-base mt-4 md:mt-0">Logout
+        <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-1" viewBox="0 0 24 24">
+          <path d="M5 12h14M12 5l7 7-7 7"></path>
+        </svg>
+      </a>
+
+      {% if user.is_superuser %}
+      <a href="{% url "admin_page" %}" class="inline-flex items-center mx-2 bg-indigo-800 text-white border-0 py-1 px-3 focus:outline-none hover:bg-indigo-700 rounded text-base mt-4 md:mt-0">Admin 
+        <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-1" viewBox="0 0 24 24">
+          <path d="M5 12h14M12 5l7 7-7 7"></path>
+        </svg>
+      </a>
+      {% endif %}
+
+      {% else %}
+
+      <a href="{% url "login" %}" class="inline-flex items-center mx-2 bg-indigo-800 text-white border-0 py-1 px-3 focus:outline-none hover:bg-indigo-700 rounded text-base mt-4 md:mt-0">Login
+        <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-1" viewBox="0 0 24 24">
+          <path d="M5 12h14M12 5l7 7-7 7"></path>
+        </svg>
+      </a>
+
+      <a href="{% url "signup" %}" class="inline-flex items-center mx-2 bg-indigo-800 text-white border-0 py-1 px-3 focus:outline-none hover:bg-indigo-700 rounded text-base mt-4 md:mt-0">Signup
+        <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-1" viewBox="0 0 24 24">
+          <path d="M5 12h14M12 5l7 7-7 7"></path>
+        </svg>
+      </a>
+
+     {% endif %}
+    </div>
+  </header>
+  
